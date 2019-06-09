@@ -56,6 +56,7 @@ public class InputHandler {
             }
             int amountRooms;
             int amountDays;
+
             try {
                 amountRooms = Integer.parseInt(tokens[2]);
                 amountDays = Integer.parseInt(tokens[3]);
@@ -63,6 +64,7 @@ public class InputHandler {
                 System.out.println(inputExpected);
                 return true;
             }
+
             try {
                 roomReservationService = new RoomReservationService(amountRooms, amountDays);
                 System.out.println("A hotel with " + amountRooms
@@ -86,6 +88,7 @@ public class InputHandler {
                 System.out.println(inputExpected);
                 return true;
             }
+
             int start;
             int end;
             try {
