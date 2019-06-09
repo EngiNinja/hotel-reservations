@@ -7,37 +7,29 @@ public class InputHandler {
     RoomReservationService roomReservationService;
 
     /**
-     * This method expects 4 types of commands:
-     * <p>
-     * create hotel (amountRooms, amountDays) - initializes a hotel.
-     * <p>
-     * create reservation (startDate, endDate) - creates a reservation.
-     * <p>
-     * exit - exits program.
-     * <p>
-     * other - ignored.
+     * This method expects 3 types of commands:
+     * <ul>
+     *      <li>create hotel (amountRooms, amountDays) - initializes a hotel.</li>
+     *      <li>create reservation (startDate, endDate) - creates a reservation.</li>
+     *      <li> exit - exits program.</li>
+     * </ul>
+     * Other commands are ignored.
      * <p>
      * Regexp is used to ensure the input is valid and to parse it.
      * <p>
      * An example of usage:
      * <p>
-     * Enter command:
-     * <p>
-     * create hotel 2 3
-     * <p>
-     * A hotel with 2 rooms was successfully created. The planing period is 0,1,2.
-     * <p>
-     * create reservation 1 2
-     * <p>
-     * The reservation was successfully made
-     * <p>
-     * create reservation 1 2
-     * <p>
-     * The reservation was successfully made
-     * <p>
-     * create reservation 1 2
-     * <p>
-     * The reservation was declined
+     *     <ul>
+     *      <li>Enter command:</li>
+     *      <li>create hotel 2 3</li>
+     *      <li>A hotel with 2 rooms was successfully created. The planing period is 0-2</li>
+     *      <li>create reservation 1 2</li>
+     *      <li>The reservation was successfully made</li>
+     *      <li>create reservation 1 2</li>
+     *      <li>The reservation was successfully made</li>
+     *      <li>create reservation 1 2</li>
+     *      <li>The reservation was declined</li>
+     * </ul>
      *
      * @param input user input from the console.
      * @return true if the program should run further, false if the program should stop.
@@ -45,7 +37,7 @@ public class InputHandler {
     public boolean handleInput(String input) {
         if (input.equals("exit")) {
             return false;
-        } else if (input.startsWith("create hotel")) {
+        }  else if (input.startsWith("create hotel")) {
             String[] tokens = input.split(" ");
             String inputExpected =
                 "Expected input to create a hotel should look as follows: " + "\n"
