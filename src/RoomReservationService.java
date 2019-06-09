@@ -1,7 +1,7 @@
 /**
  * This class represents my implementation of the hotel reservation system.
  */
-public class MyHotel {
+public class RoomReservationService {
 
     /**
      * Represents the room availability.
@@ -17,12 +17,14 @@ public class MyHotel {
      * @param amountRooms
      * @param amountDays
      */
-    public MyHotel(int amountRooms, int amountDays) {
+    public RoomReservationService(int amountRooms, int amountDays) throws IllegalArgumentException{
+        if (amountRooms <= 0 || amountDays <= 0) {
+            throw new IllegalArgumentException(
+                "The amount of rooms and the amount of days should be bigger than 0");
+        }
         this.roomIsBooked = new boolean[amountRooms][amountDays];
         this.amountRooms = amountRooms;
         this.amountDays = amountDays;
-        System.out.println("A hotel with " + amountRooms
-            + " rooms was successfully created. The planing period is 0-" + (amountDays - 1) + ".");
     }
 
     /**
@@ -30,20 +32,15 @@ public class MyHotel {
      * @param end
      * @return true if the reservation was accepted, otherwise false.
      */
-    public boolean requestReservation(int start, int end) {
-        if (!validateDates(start, end)) {
-            return false;
-        }
-        for (int i = 0; i < roomIsBooked.length; i++) {
+    public boolean requestReservation(int start, int end) throws IllegalArgumentException {
+        for (int i = 0; i < amountRooms; i++) {
             if (roomIsAvailableForPeriod(i, start, end)) {
                 for (int j = start; j <= end; j++) {
                     roomIsBooked[i][j] = true;
                 }
-                System.out.println("The reservation was successfully made.");
                 return true;
             }
         }
-        System.out.println("The reservation was declined.");
         return false;
     }
 
@@ -53,7 +50,9 @@ public class MyHotel {
      * @param end
      * @return true if room is available, otherwise false.
      */
-    public boolean roomIsAvailableForPeriod(int roomId, int start, int end) {
+    public boolean roomIsAvailableForPeriod(int roomId, int start, int end)
+        throws IllegalArgumentException {
+        validateDates(start, end);
         for (int i = start; i <= end; i++) {
             if (roomIsBooked[roomId][i]) {
                 return false;
@@ -67,36 +66,40 @@ public class MyHotel {
      * @param end
      * @return true if dates are valid, otherwise false.
      */
-    public boolean validateDates(int start, int end) {
+    public void validateDates(int start, int end) throws IllegalArgumentException {
         boolean outputIsValid = true;
+        StringBuilder exceptionMessage = new StringBuilder();
         if (start > end) {
-            System.out.println("The start date should be before the end date.");
+            exceptionMessage.append("The start date should be before the end date" + "\n");
             outputIsValid = false;
         }
         if (start < 0) {
-            System.out.println("The start date should be 0 or later.");
+            exceptionMessage.append("The start date should be 0 or later" + "\n");
             outputIsValid = false;
         }
         if (end > this.amountDays - 1) {
-            System.out.println("The end date should be " + this.amountDays + " or earlier.");
+            exceptionMessage
+                .append("The end date should be " + this.amountDays + " or earlier" + "\n");
             outputIsValid = false;
         }
-        return outputIsValid;
+        if (!outputIsValid) {
+            throw new IllegalArgumentException(exceptionMessage.toString());
+        }
     }
 
     @Override public String toString() {
-        String output = "";
-        for (int i = 0; i < roomIsBooked.length; i++) {
-            for (int j = 0; j < roomIsBooked[i].length; j++) {
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < amountRooms; i++) {
+            for (int j = 0; j < amountDays; j++) {
                 boolean currentRoomDayReservation = roomIsBooked[i][j];
                 if (currentRoomDayReservation) {
-                    output += true + "  ";
+                    output.append("X");
                 } else {
-                    output += false + " ";
+                    output.append(".");
                 }
             }
-            output += "\n";
+            output.append("\n");
         }
-        return output;
+        return output.toString();
     }
 }
